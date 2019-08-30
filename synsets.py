@@ -149,7 +149,7 @@ desk = wn.synset('desk.n.01').definition()
 print(desk)
 jeep = wn.synset('jeep.n.01').definition()
 print(jeep)
-lawn_mower = wn.synset('wn.').definition()
+#lawn_mower = wn.synset('wn.').definition()
 library = wn.synset('library.n.01').definition()
 print(library)
 pole = wn.synset('pole.n.01').definition()
@@ -160,10 +160,10 @@ refrigerator = wn.synset('refrigerator.n.01').definition()
 print(refrigerator)
 restaurant = wn.synset('restaurant.n.01').definition()
 print(restaurant)
-rocking_chair = wn.synset('wn.').definition()
+#rocking_chair = wn.synset('wn.').definition()
 screen = wn.synset('screen.n.01').definition()
 print(screen)
-sewing_machine = wn.synset('wn.').definition()
+#sewing_machine = wn.synset('wn.').definition()
 swing = wn.synset('swing.n.01').definition()
 print(swing)
 
@@ -361,7 +361,6 @@ whistle_1 = wn.synset('whistle.n.02').definition()
 print(whistle_1)
 
 # Stubborn ones
-
 wn.synsets('cockroach')
 wn.synsets('refrigerator')
 wn.synsets('bee')
@@ -532,7 +531,7 @@ a_b = similarity(animate_variables, ib_variables)
 a_s = similarity(animate_variables, is_variables)
 b_s = similarity(ib_variables, is_variables)
 
-
+###### Saving Knonkle similarity pairs to Excel sheet ######
 key = list(b_s.keys())
 value = list(b_s.values())
 
@@ -568,3 +567,30 @@ df = pd.DataFrame()
 df['Animate, Big Inanimate'] = list(a_ib25.keys())
 df['Score'] = list(a_ib25.values())
 df.to_csv('/Users/brendafinlay/Documents/Cusack Lab/0.25_dataframe.csv', index=False)
+#############               ###############             #################
+
+
+###### Performig semantic similarity on whole object list #####
+all_objects = animate_variables + ib_variables + is_variables
+
+print(all_objects)
+len(all_objects)
+
+### Modified similarity function to compare one object to ALL objects ###
+def similarity_iterations(list):
+    sim_dict = {}
+    for object in list:
+        for comparator in list:
+            sim = (object).wup_similarity(comparator)
+            if sim >= 0.5:
+                sim_dict.update({(object, comparator): sim})
+    return sim_dict
+
+x = similarity_iterations(all_objects)
+
+keyy = list(x.keys())
+valuee = list(x.values())
+df = pd.DataFrame()
+df['All Semantic Pairs'] = keyy
+df['Score'] = valuee
+df.to_csv('/Users/brendafinlay/Documents/Cusack Lab/all_semantic_pairs.csv', index=False)
